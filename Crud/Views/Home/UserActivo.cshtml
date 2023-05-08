@@ -1,0 +1,237 @@
+﻿@model PagedList.IPagedList<Crud.Models.UsuarioActivo>
+@using PagedList.Mvc;
+@{
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<style type="text/css">
+
+    body {
+        font-family: 'Varela Round', sans-serif;
+    }
+
+    .modal-confirm {
+        color: #636363;
+        width: 400px;
+    }
+
+        .modal-confirm .modal-content {
+            padding: 20px;
+            border-radius: 5px;
+            border: none;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .modal-confirm .modal-header {
+            border-bottom: none;
+            position: relative;
+        }
+
+        .modal-confirm h4 {
+            text-align: center;
+            font-size: 26px;
+            margin: 30px 0 -10px;
+        }
+
+        .modal-confirm .close {
+            position: absolute;
+            top: -5px;
+            right: -2px;
+        }
+
+        .modal-confirm .modal-body {
+            color: #999;
+        }
+
+        .modal-confirm .modal-footer {
+            border: none;
+            text-align: center;
+            border-radius: 5px;
+            font-size: 13px;
+            padding: 10px 15px 25px;
+        }
+
+            .modal-confirm .modal-footer a {
+                color: #999;
+            }
+
+        .modal-confirm .icon-box2 {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto;
+            border-radius: 50%;
+            z-index: 9;
+            text-align: center;
+            border: 3px solid #f15e5e;
+        }
+
+            .modal-confirm .icon-box2 i {
+                color: #f15e5e;
+                font-size: 46px;
+                display: inline-block;
+                margin-top: 13px;
+            }
+
+        .modal-confirm .btn {
+            color: #fff;
+            border-radius: 4px;
+            background: #60c7c1;
+            text-decoration: none;
+            transition: all 0.4s;
+            line-height: normal;
+            min-width: 120px;
+            border: none;
+            min-height: 40px;
+            border-radius: 3px;
+            margin: 0 5px;
+            outline: none !important;
+        }
+
+        .modal-confirm .btn-info2 {
+            background: #c1c1c1;
+        }
+
+            .modal-confirm .btn-info2:hover, .modal-confirm .btn-info2:focus {
+                background: #a8a8a8;
+            }
+
+        .modal-confirm .btn-danger {
+            background: #f15e5e;
+        }
+
+            .modal-confirm .btn-danger:hover, .modal-confirm .btn-danger:focus {
+                background: #ee3535;
+            }
+
+    .trigger-btn {
+        display: inline-block;
+        margin: 100px auto;
+    }
+</style>
+
+
+
+<form asp-controller="Home" asp-action="UserActivo"  method="get" class="form-horizontal" role="form">
+    <p>
+        <table>
+            <tr>
+                <td style="padding:2px; " width="10%">
+                    <input type="text" name="searchCedula" value="@ViewBag.searchCedula" class="search-text form-control" placeholder="Cedula" style="text-transform:uppercase;" maxlength="20" />
+                </td>
+                <td style="padding:2px;" width="15%">
+                    <input type="text" name="searchNombre" value="@ViewBag.searchNombre" class="search-text form-control" placeholder="Nombre" style="text-transform:uppercase;" maxlength="20" />
+                </td>
+                <td style="padding:2px;">
+                    <button class="btn btn-info2" id="btn_buscar">
+                        <span class="glyphicon glyphicon-search"></span>
+                        <span class="submit-text">Buscar</span>
+                    </button>
+                </td>
+                <td width="45%" style="text-align:center;">
+                    <h3>@ViewBag.Title</h3>
+                </td>
+                <td style="padding:2px;text-align:right">
+                    Tamaño Página:
+                </td>
+                <td style="padding:2px;" width="5%">
+                    <input type="text" name="pageSize" value="@ViewBag.pageSize" class="search-text form-control" maxlength="3" />
+                </td>
+            </tr>
+        </table>
+    </p>
+</form>
+
+<table class="table table-responsive table-hover small">
+    <tr>
+        <th>
+            @*@Html.DisplayNameFor(model => model.Codigo)*@
+            @Html.ActionLink("Cedula", "UserActivo",
+            new { sortOrder = "Cedula", CurrentSort = ViewBag.CurrentSort,  pageSize = @ViewBag.pageSize, searchNombre = @ViewBag.searchNombre, searchCedula = @ViewBag.searchCedula })
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.Codigo)*@
+            @Html.ActionLink("NombreCompleto", "UserActivo",
+            new { sortOrder = "NombreCompleto", CurrentSort = ViewBag.CurrentSort,  pageSize = @ViewBag.pageSize, searchNombre = @ViewBag.searchNombre, searchCedula = @ViewBag.searchCedula })
+        </th>
+        <th>
+            @Html.ActionLink("UserName", "UserActivo",
+            new { sortOrder = "NombreCompleto", CurrentSort = ViewBag.CurrentSort,  pageSize = @ViewBag.pageSize, searchNombre = @ViewBag.searchNombre, searchCedula = @ViewBag.searchCedula })
+        </th>
+        <th>
+            @Html.ActionLink("Estado", "UserActivo",
+            new { sortOrder = "NombreCompleto", CurrentSort = ViewBag.CurrentSort,  pageSize = @ViewBag.pageSize, searchNombre = @ViewBag.searchNombre, searchCedula = @ViewBag.searchCedula })
+        </th>
+        
+        <th>
+            @Html.ActionLink("FechaCreacion", "UserActivo",
+            new { sortOrder = "NombreCompleto", CurrentSort = ViewBag.CurrentSort,  pageSize = @ViewBag.pageSize, searchNombre = @ViewBag.searchNombre, searchCedula = @ViewBag.searchCedula })
+        </th>
+        <th>
+            <span>
+                <a href="@Url.Action("Create", new { Idmenu=ViewBag.Idmenu })" class="btn btn-primary btn-xs ">
+                    <span class="glyphicon glyphicon-file"></span>
+                    Nuevo
+                </a>
+            </span>
+
+        </th>
+
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.cedula)
+
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.nombreCompleto) 
+
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.alias)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.estado)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.fechaCreacion)
+            </td>
+            <td>
+
+                <span>
+                    <a href="@Url.Action("Edit",new { ID=item.id })" class="btn btn-info btn-xs">
+                        <span class="glyphicon glyphicon-edit"></span>
+                        Editar
+                    </a>
+                </span>
+               
+                                            <form asp-controller="Home" asp-action="Delete" asp-route-id="@item.id" method="post" class="form-horizontal" role="form">
+
+                                                <button class="btn btn-danger" id="btn_delete">
+                                                    <span class="glyphicon glyphicon-trash"></span>
+                                                    <span class="submit-text">Eliminar</span>
+                                                </button>
+                                            </form>
+
+                    
+
+            </td>
+        </tr>
+    }
+</table>
+
+@if (Model.PageCount > 1)
+{
+    <div id='Paging' style="text-align:center">
+        Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+        de @Model.PageCount
+        PagedListPager(Model, page => Url.Action("UserActivo", new { page, pageSize = @ViewBag.pageSize, CurrentSort = ViewBag.CurrentSort }))
+    </div>
+}
+
